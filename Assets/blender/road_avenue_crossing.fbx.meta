@@ -1,0 +1,122 @@
+fileFormatVersion: 2
+guid: f3adc7326b8faa148bb3a81e3b0991ea
+ModelImporter:
+  serializedVersion: 16
+  fileIDToRecycleName:
+    100000: Cube.002
+    100002: Cube.003
+    100004: Pedestrian Green Light L
+    100006: Pedestrian Green Light R
+    100008: Pedestrian Red Light L
+    100010: Pedestrian Red Light R
+    100012: //RootNode
+    100014: Vehicle Green Light L
+    100016: Vehicle Green Light R
+    100018: Vehicle Red Light L
+    100020: Vehicle Red Light R
+    100022: Vehicle Yellow Light L
+    100024: Vehicle Yellow Light R
+    400000: Cube.002
+    400002: Cube.003
+    400004: Pedestrian Green Light L
+    400006: Pedestrian Green Light R
+    400008: Pedestrian Red Light L
+    400010: Pedestrian Red Light R
+    400012: //RootNode
+    400014: Vehicle Green Light L
+    400016: Vehicle Green Light R
+    400018: Vehicle Red Light L
+    400020: Vehicle Red Light R
+    400022: Vehicle Yellow Light L
+    400024: Vehicle Yellow Light R
+    2300000: Cube.002
+    2300002: Cube.003
+    2300004: Pedestrian Green Light L
+    2300006: Pedestrian Green Light R
+    2300008: Pedestrian Red Light L
+    2300010: Pedestrian Red Light R
+    2300012: Vehicle Green Light L
+    2300014: Vehicle Green Light R
+    2300016: Vehicle Red Light L
+    2300018: Vehicle Red Light R
+    2300020: Vehicle Yellow Light L
+    2300022: Vehicle Yellow Light R
+    3300000: Cube.002
+    3300002: Cube.003
+    3300004: Pedestrian Green Light L
+    3300006: Pedestrian Green Light R
+    3300008: Pedestrian Red Light L
+    3300010: Pedestrian Red Light R
+    3300012: Vehicle Green Light L
+    3300014: Vehicle Green Light R
+    3300016: Vehicle Red Light L
+    3300018: Vehicle Red Light R
+    3300020: Vehicle Yellow Light L
+    3300022: Vehicle Yellow Light R
+    4300000: Cube.002
+    4300002: Cube.003
+    4300004: Pedestrian Red Light L
+    4300006: Pedestrian Green Light L
+    4300008: Vehicle Red Light L
+    4300010: Vehicle Green Light L
+    4300012: Vehicle Yellow Light L
+    4300014: Vehicle Yellow Light R
+    4300016: Vehicle Green Light R
+    4300018: Vehicle Red Light R
+    4300020: Pedestrian Green Light R
+    4300022: Pedestrian Red Light R
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 1
+    materialSearch: 2
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .00999999978
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
