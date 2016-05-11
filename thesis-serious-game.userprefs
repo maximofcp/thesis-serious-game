@@ -1,0 +1,13 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="c:\Users\Filipe Paulo\Documents\Things\Thesis\thesis-serious-game\Assets\scripts\enemy\VehicleController.cs">
+    <Files>
+      <File FileName="c:\Users\Filipe Paulo\Documents\Things\Thesis\thesis-serious-game\Assets\scripts\enemy\VehicleController.cs" Line="17" Column="14" />
+      <File FileName="Assets\scripts\scene\GameBuilder.cs" Line="83" Column="79" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

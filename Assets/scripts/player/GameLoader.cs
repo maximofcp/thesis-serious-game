@@ -11,7 +11,7 @@ public class GameLoader : MonoBehaviour {
 
 	void Awake()
 	{
-		if(GameManager.instance == null)
+		if(ArcadeGameManager.instance == null)
 			Instantiate(settings);
 
 		//if(GameManager.instance == null)

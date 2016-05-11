@@ -2,50 +2,48 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-public class VehicleAI : MonoBehaviour {
+public class VehicleController : MonoBehaviour {
 
-
-	public VehicleDirection direction;
-	public Vector3 startPoint;
-	public bool go;
+	private Utils.VehicleDirection direction;
+	private Vector3 startPoint;
+	private bool go;
 
 	private float currentSpeed;
-	private VehicleSpeed maxSpeed;
+	private Utils.VehicleSpeed maxSpeed;
 	private float brake;
-	private GameManager settings;
+	private ArcadeGameManager settings;
 	private Vector3 target;
 	private Text guiText;
 	private TrafficLightState trafficLightState = TrafficLightState.None;
 
 	void Awake () {
-		settings = GameManager.instance;
-		brake = settings.defaultVehicleBrakeForce;
+		settings = ArcadeGameManager.instance;
+		brake = settings.vehicleSettings.defaultVehicleBrakeForce;
 	}
 
 	void Start()
 	{
-
 		int chosenSpeedIndex = Random.Range(0, 5);
 		switch(chosenSpeedIndex)
 		{
 			case 0:
-				maxSpeed = VehicleSpeed.Going20;
+				maxSpeed = Utils.VehicleSpeed.Going20;
 				break;
 
 			case 1:
-				maxSpeed = VehicleSpeed.Going40;
+				maxSpeed = Utils.VehicleSpeed.Going40;
 				break;
 
 			case 2:
-				maxSpeed = VehicleSpeed.Going50;
+				maxSpeed = Utils.VehicleSpeed.Going50;
 				break;
 
 			case 3:
-				maxSpeed = VehicleSpeed.Going70;
+				maxSpeed = Utils.VehicleSpeed.Going70;
 				break;
 
 			case 4:
-				maxSpeed = VehicleSpeed.Going90;
+				maxSpeed = Utils.VehicleSpeed.Going90;
 				break;
 		}
 
@@ -56,7 +54,7 @@ public class VehicleAI : MonoBehaviour {
 	void Update () {
 
 		// outside bounds
-		if((direction == VehicleDirection.Left && transform.position.x < settings.GameLeftBoundary) || (direction == VehicleDirection.Right && transform.position.x > settings.GameRightBoundary))
+		if((direction == Utils.VehicleDirection.Left && transform.position.x < settings.GameLeftBoundary) || (direction == Utils.VehicleDirection.Right && transform.position.x > settings.GameRightBoundary))
 		{
 			gameObject.SetActive(false);
 		}
@@ -67,15 +65,15 @@ public class VehicleAI : MonoBehaviour {
 			currentSpeed = Mathf.Lerp(currentSpeed, (float)maxSpeed, brake);
 		else 
 			currentSpeed = Mathf.Lerp(currentSpeed, 0, brake);
-		
-
-		if(!go && trafficLightState == TrafficLightState.Green)
-			go = true;
 
 		// to stop more quickly
 		if(!go && currentSpeed < 1)
 			currentSpeed = 0.0f;
 
+
+		if(!go && trafficLightState == TrafficLightState.Green)
+			go = true;
+		
 
 		// sets speed indicator above
 		if(guiText != null)
@@ -91,12 +89,12 @@ public class VehicleAI : MonoBehaviour {
 	{
 		switch(col.gameObject.tag)
 		{
-			case Constants.TagVehicleStopZoneAvenueRight:
+			case Constants.Tag.TagVehicleStopZoneAvenueRight:
 				TrafficLightsController trafficControllerR = col.transform.GetComponentInParent<TrafficLightsController>();
 				trafficLightState = trafficControllerR.trafficRight;
 				break;
 
-			case Constants.TagVehicleStopZoneAvenueLeft:
+			case Constants.Tag.TagVehicleStopZoneAvenueLeft:
 				TrafficLightsController trafficControllerL = col.transform.GetComponentInParent<TrafficLightsController>();
 				trafficLightState = trafficControllerL.trafficLeft;
 				break;
@@ -108,24 +106,24 @@ public class VehicleAI : MonoBehaviour {
 		switch(col.gameObject.tag)
 		{
 			// if encounters a crosswalk with the player about to cross, stop
-			case Constants.TagVehicleStopZone:
+			case Constants.Tag.TagVehicleStopZone:
 				IntentionToCrossController intentionController = col.transform.GetComponentInParent<IntentionToCrossController>();
 				
-				if(intentionController != null && intentionController.intention)
+				if(intentionController != null && intentionController.HasIntention())
 				{
 					go = false;
-					Invoke("Go", settings.vehicleCrosswalkWaitTime);
+					Invoke("Go", settings.vehicleSettings.vehicleCrosswalkWaitTime);
 				}				
 				break;
 
-			case Constants.TagVehicleStopZoneAvenueRight:
+			case Constants.Tag.TagVehicleStopZoneAvenueRight:
 				TrafficLightsController trafficControllerR = col.transform.GetComponentInParent<TrafficLightsController>();
 				trafficLightState = trafficControllerR.trafficRight;
 				if(trafficControllerR != null && (trafficControllerR.trafficRight == TrafficLightState.Red || trafficControllerR.trafficRight == TrafficLightState.Yellow))
 					go = false;
 
 				break;
-			case Constants.TagVehicleStopZoneAvenueLeft:
+			case Constants.Tag.TagVehicleStopZoneAvenueLeft:
 				TrafficLightsController trafficControllerL = col.transform.GetComponentInParent<TrafficLightsController>();
 				trafficLightState = trafficControllerL.trafficRight;
 				if(trafficControllerL != null && (trafficControllerL.trafficRight == TrafficLightState.Red || trafficControllerL.trafficRight == TrafficLightState.Yellow))
@@ -136,11 +134,11 @@ public class VehicleAI : MonoBehaviour {
 
 			// if encounters a car, means that the car's going slower. Must slow down and match his pace.
 			// if the car is stopping, must stop too.
-			case Constants.TagVehicleWarningZone:
-				VehicleAI carAhead = col.GetComponentInParent<VehicleAI>();
+			case Constants.Tag.TagVehicleWarningZone:
+				VehicleController carAhead = col.GetComponentInParent<VehicleController>();
 
 				// if this event was thrown by the car behind
-				if((direction == VehicleDirection.Left && transform.position.x > carAhead.transform.position.x) || (direction == VehicleDirection.Right && transform.position.x < carAhead.transform.position.x))
+				if((direction == Utils.VehicleDirection.Left && transform.position.x > carAhead.transform.position.x) || (direction == Utils.VehicleDirection.Right && transform.position.x < carAhead.transform.position.x))
 				{
 					brake += 0.03f;
 					if(carAhead.go)
@@ -168,7 +166,7 @@ public class VehicleAI : MonoBehaviour {
 		switch(col.gameObject.tag)
 		{
 			// if exited a car collided, means that this car can go
-			case Constants.TagVehicleWarningZone:
+			case Constants.Tag.TagVehicleWarningZone:
 				Invoke("Go", 1f);
 				break;
 		}
@@ -189,18 +187,18 @@ public class VehicleAI : MonoBehaviour {
 	/*
 	 * Sets the direction of this vehicle
 	 */
-	public void SetDirection(VehicleDirection d)
+	public void SetDirection(Utils.VehicleDirection d)
 	{
 		direction = d;
 
 		// define target point
-		if(d == VehicleDirection.Left)
+		if(d == Utils.VehicleDirection.Left)
 		{
 			target = new Vector3(settings.GameLeftBoundary - 50, transform.position.y, transform.position.z);
 		}
-		else if(d == VehicleDirection.Right)
+		else if(d == Utils.VehicleDirection.Right)
 		{
-			transform.rotation *= Quaternion.Euler(0,0,180f);
+			transform.rotation *= Quaternion.Euler(0,0,180f);		// must rotate 3d asset
 			target = new Vector3(settings.GameRightBoundary + 50, transform.position.y, transform.position.z);
 		}
 	}
@@ -210,10 +208,10 @@ public class VehicleAI : MonoBehaviour {
 	 */
 	public float GetCurrentSpeed()
 	{
-		int oldMin = Constants.VehicleMinSpeedModel;
-		int oldMax = Constants.VehicleMaxSpeedModel;
-		int newMin = Constants.VehicleMinSpeedView;
-		int newMax = Constants.VehicleMaxSpeedView;
+		int oldMin = Constants.Vehicle.VehicleMinSpeedModel;
+		int oldMax = Constants.Vehicle.VehicleMaxSpeedModel;
+		int newMin = Constants.Vehicle.VehicleMinSpeedView;
+		int newMax = Constants.Vehicle.VehicleMaxSpeedView;
 		int oldValue = (int)currentSpeed;
 		float newValue = (((oldValue - oldMin) * (newMax - newMin)) / (oldMax - oldMin)) + newMin;
 		return newValue;
@@ -222,17 +220,17 @@ public class VehicleAI : MonoBehaviour {
 	/*
 	 * Sets current car speed
 	 */
-	public void SetCurrentSpeed(VehicleSpeed speed)
+	public void SetCurrentSpeed(Utils.VehicleSpeed speed)
 	{
-		float newMin = Constants.VehicleMinSpeedModel;
-		float newMax = Constants.VehicleMaxSpeedModel;
-		float oldMin = Constants.VehicleMinSpeedView;
-		float oldMax = Constants.VehicleMaxSpeedView;
+		float newMin = Constants.Vehicle.VehicleMinSpeedModel;
+		float newMax = Constants.Vehicle.VehicleMaxSpeedModel;
+		float oldMin = Constants.Vehicle.VehicleMinSpeedView;
+		float oldMax = Constants.Vehicle.VehicleMaxSpeedView;
 		float oldValue = (float)speed;
 		float newValue = (((oldValue - oldMin) * (newMax - newMin)) / (oldMax - oldMin)) + newMin;
 
 
-		maxSpeed = (VehicleSpeed)newValue;
+		maxSpeed = (Utils.VehicleSpeed)newValue;
 	}
 
 
@@ -241,10 +239,10 @@ public class VehicleAI : MonoBehaviour {
 	 */
 	public static string GetCurrentSpeedIndicator (int speed)
 	{
-		int oldMin = Constants.VehicleMinSpeedModel;
-		int oldMax = Constants.VehicleMaxSpeedModel;
-		int newMin = Constants.VehicleMinSpeedView;
-		int newMax = Constants.VehicleMaxSpeedView;
+		int oldMin = Constants.Vehicle.VehicleMinSpeedModel;
+		int oldMax = Constants.Vehicle.VehicleMaxSpeedModel;
+		int newMin = Constants.Vehicle.VehicleMinSpeedView;
+		int newMax = Constants.Vehicle.VehicleMaxSpeedView;
 		int oldValue = speed;
 		int newValue = (((oldValue - oldMin) * (newMax - newMin)) / (oldMax - oldMin)) + newMin;
 		return newValue.ToString();
@@ -255,10 +253,10 @@ public class VehicleAI : MonoBehaviour {
 	 */
 	string GetCurrentSpeedIndicator ()
 	{
-		int oldMin = Constants.VehicleMinSpeedModel;
-		int oldMax = Constants.VehicleMaxSpeedModel;
-		int newMin = Constants.VehicleMinSpeedView;
-		int newMax = Constants.VehicleMaxSpeedView;
+		int oldMin = Constants.Vehicle.VehicleMinSpeedModel;
+		int oldMax = Constants.Vehicle.VehicleMaxSpeedModel;
+		int newMin = Constants.Vehicle.VehicleMinSpeedView;
+		int newMax = Constants.Vehicle.VehicleMaxSpeedView;
 		int oldValue = (int)currentSpeed;
 		float newValue = (((oldValue - oldMin) * (newMax - newMin)) / (oldMax - oldMin)) + newMin;
 		return newValue.ToString();

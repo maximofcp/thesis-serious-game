@@ -15,9 +15,9 @@ public enum Lane
 public class LaneDirection
 {
 	public Vector3 startPosition;
-	public VehicleDirection direction;
+	public Utils.VehicleDirection direction;
 
-	public LaneDirection(Vector3 pos, VehicleDirection dir)
+	public LaneDirection(Vector3 pos, Utils.VehicleDirection dir)
 	{
 		direction = dir;
 		startPosition = pos;
@@ -28,7 +28,7 @@ public class RoadController : MonoBehaviour {
 
 	public bool avenue;
 
-	private GameManager settings;
+	private ArcadeGameManager settings;
 	public List<GameObject> normalVehicles;
 	public List<GameObject> emergencyVehicles;
 	private List<GameObject> vehiclesOnLanes;
@@ -36,9 +36,9 @@ public class RoadController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		settings = GameManager.instance;
+		settings = ArcadeGameManager.instance;
 		vehiclesOnLanes = new List<GameObject>();
-		InvokeRepeating("SpawnEnemy", 0, settings.vehicleSpawnFrequency);
+		InvokeRepeating("SpawnEnemy", 0, settings.vehicleSettings.vehicleSpawnFrequency);
 	}
 
 
@@ -79,7 +79,7 @@ public class RoadController : MonoBehaviour {
 			}
 			
 			// generates emergency vehicle
-			if(Random.value < Constants.ProbabilityLow)
+			if(Random.value < Constants.Probability.ProbabilityLow)
 			{
 				vehicle = emergencyVehicles[Random.Range(0, emergencyVehicles.Count)];
 			}
@@ -96,7 +96,7 @@ public class RoadController : MonoBehaviour {
 			vehiclesOnLanes.Add(enemy);
 			
 			// sets the direction and orders to go
-			VehicleAI model = enemy.GetComponent<VehicleAI>();
+			VehicleController model = enemy.GetComponent<VehicleController>();
 			model.SetDirection(laneDirection.direction);
 			model.Go();
 
@@ -113,7 +113,7 @@ public class RoadController : MonoBehaviour {
 		GameObject dummy = Instantiate (prefab) as GameObject;
 		dummy.name = prefab.name;
 		dummy.transform.position = position;
-		dummy.transform.parent = GameObject.Find (settings.sceneObjectsNodeName).transform;		// Change new object parent
+		dummy.transform.parent = GameObject.Find (settings.sceneSettings.sceneObjectsNodeName).transform;		// Change new object parent
 		return dummy;
 	}
 
@@ -124,45 +124,45 @@ public class RoadController : MonoBehaviour {
 	 */
 	LaneDirection GetVehicleStartPointOnLane(Lane lane)
 	{
-		Vector3 lanePosition = new Vector3(0, settings.vehicleDefaultY, 0);
-		VehicleDirection direction = VehicleDirection.Left;
+		Vector3 lanePosition = new Vector3(0, settings.vehicleSettings.vehicleDefaultY, 0);
+		Utils.VehicleDirection direction = Utils.VehicleDirection.Left;
 
 		switch(lane)
 		{
 			case Lane.NormalLeftDirection:
 				lanePosition.x = settings.GameRightBoundary;
-				lanePosition.z = transform.position.z + Constants.LaneNormalLeftDirectionZ;
-				direction = VehicleDirection.Left;
+				lanePosition.z = transform.position.z + Constants.Dimension.LaneNormalLeftDirectionZ;
+				direction = Utils.VehicleDirection.Left;
 				break;
 
 			case Lane.NormalRightDirection:
 				lanePosition.x = settings.GameLeftBoundary;
-				lanePosition.z = transform.position.z + Constants.LaneNormalRightDirectionZ;
-				direction = VehicleDirection.Right;
+				lanePosition.z = transform.position.z + Constants.Dimension.LaneNormalRightDirectionZ;
+				direction = Utils.VehicleDirection.Right;
 				break;
 
 			case Lane.AvenueLeftDirectionL:	
 				lanePosition.x = settings.GameRightBoundary;
-				lanePosition.z = transform.position.z + Constants.LaneAvenueLeftDirectionLZ;
-				direction = VehicleDirection.Left;
+				lanePosition.z = transform.position.z + Constants.Dimension.LaneAvenueLeftDirectionLZ;
+				direction = Utils.VehicleDirection.Left;
 				break;
 
 			case Lane.AvenueLeftDirectionR:
 				lanePosition.x = settings.GameRightBoundary;
-				lanePosition.z = transform.position.z + Constants.LaneAvenueLeftDirectionRZ;
-				direction = VehicleDirection.Left;
+				lanePosition.z = transform.position.z + Constants.Dimension.LaneAvenueLeftDirectionRZ;
+				direction = Utils.VehicleDirection.Left;
 				break;
 
 			case Lane.AvenueRightDirectionL:
 				lanePosition.x = settings.GameLeftBoundary;
-				lanePosition.z = transform.position.z + Constants.LaneAvenueRightDirectionLZ;
-				direction = VehicleDirection.Right;
+				lanePosition.z = transform.position.z + Constants.Dimension.LaneAvenueRightDirectionLZ;
+				direction = Utils.VehicleDirection.Right;
 				break;
 
 			case Lane.AvenueRightDirectionR:
 				lanePosition.x = settings.GameLeftBoundary;
-				lanePosition.z = transform.position.z + Constants.LaneAvenueRightDirectionRZ;
-				direction = VehicleDirection.Right;
+				lanePosition.z = transform.position.z + Constants.Dimension.LaneAvenueRightDirectionRZ;
+				direction = Utils.VehicleDirection.Right;
 				break;
 		}
 

@@ -19,7 +19,7 @@ public class StaticSceneGenerator : MonoBehaviour {
 
 	private SceneStaticObjectType previous;
 	private Vector3 pointer;
-	private GameManager settings;
+	private ArcadeGameManager settings;
 	private Transform levelParent;
 
 	private enum SceneStaticObjectType
@@ -36,14 +36,14 @@ public class StaticSceneGenerator : MonoBehaviour {
 	void Start () {
 
 		// Gets singleton
-		settings = GameManager.instance;
+		settings = ArcadeGameManager.instance;
 
-		levelParent = GameObject.Find (settings.sceneObjectsNodeName).transform;
+		levelParent = GameObject.Find (settings.sceneSettings.sceneObjectsNodeName).transform;
 
 		// Sets pointer to initial state
 		float pointerx = settings.GameLeftBoundary;
-		float pointery = settings.defaultGenerationPositionY;
-		float pointerz = settings.defaultGenerationPositionZ;
+		float pointery = settings.sceneSettings.defaultGenerationPositionY;
+		float pointerz = settings.sceneSettings.defaultGenerationPositionZ;
 		pointer = new Vector3(pointerx, pointery, pointerz);
 
 		/*
@@ -72,7 +72,7 @@ public class StaticSceneGenerator : MonoBehaviour {
 	{
 		foreach(Transform t in levelParent)
 		{
-			if((int)t.gameObject.transform.position.z < (int)player.transform.position.z - (int)settings.generationOffsetZ)
+			if((int)t.gameObject.transform.position.z < (int)player.transform.position.z - (int)settings.sceneSettings.generationOffsetZ)
 				Destroy(t.gameObject);
 		}
 	}
@@ -82,7 +82,7 @@ public class StaticSceneGenerator : MonoBehaviour {
 	 */
 	void GenerateStaticSceneObjects()
 	{
-		if(pointer.z < player.transform.position.z + settings.generationOffsetZ)
+		if(pointer.z < player.transform.position.z + settings.sceneSettings.generationOffsetZ)
 		{	
 			int generate = Random.Range(0,3);
 
@@ -112,15 +112,15 @@ public class StaticSceneGenerator : MonoBehaviour {
 	 */
 	void GenerateStaticSceneObjectLine(SceneStaticObjectType type)
 	{
-		float capacity = settings.GameRightBoundary - Constants.PathSizeX;
-		int crosswalkGenerationCapacity = settings.crosswalkDensity;
+		float capacity = settings.GameRightBoundary - Constants.Dimension.PathSizeX;
+		int crosswalkGenerationCapacity = settings.sceneSettings.crosswalkDensity;
 
 		while(pointer.x <= capacity)
 		{
 			// Spawn a crosswalk if the scene object type is road
 			if(type == SceneStaticObjectType.Road || type == SceneStaticObjectType.Crosswalk)
 			{
-				if(crosswalkGenerationCapacity > 0 && Random.value < Constants.ProbabilityMedium && IsInPlayableArea(pointer))
+				if(crosswalkGenerationCapacity > 0 && Random.value < Constants.Probability.ProbabilityMedium && IsInPlayableArea(pointer))
 				{
 					type = SceneStaticObjectType.Crosswalk;
 					crosswalkGenerationCapacity -= 1;
@@ -148,7 +148,7 @@ public class StaticSceneGenerator : MonoBehaviour {
 		GameObject dummy = Instantiate (prefab) as GameObject;
 		dummy.name = prefab.name;
 		dummy.transform.position = pointer;
-		dummy.transform.parent = GameObject.Find (settings.sceneObjectsNodeName).transform;		// Change new object parent
+		dummy.transform.parent = GameObject.Find (settings.sceneSettings.sceneObjectsNodeName).transform;		// Change new object parent
 
 		// changes object material to differentiate game area from off zone
 		if(!IsInPlayableArea(pointer))
@@ -169,7 +169,7 @@ public class StaticSceneGenerator : MonoBehaviour {
 		GameObject dummy = Instantiate (prefab) as GameObject;
 		dummy.name = prefab.name;
 		dummy.transform.position = pointer;
-		dummy.transform.parent = GameObject.Find (settings.sceneObjectsNodeName).transform;		// Change new object parent
+		dummy.transform.parent = GameObject.Find (settings.sceneSettings.sceneObjectsNodeName).transform;		// Change new object parent
 		
 		// changes object material to differentiate game area from off zone
 		if(!IsInPlayableArea(pointer))
@@ -198,7 +198,7 @@ public class StaticSceneGenerator : MonoBehaviour {
 
 	bool IsInPlayableArea(Vector3 position)
 	{
-		return position.x > settings.GameLeftPlayableBoundary - Constants.PathSizeX && position.x < settings.GameRightPlayableBoundary;
+		return position.x > settings.GameLeftPlayableBoundary - Constants.Dimension.PathSizeX && position.x < settings.GameRightPlayableBoundary;
 	}
 
 	float GetSceneObjectZ(SceneStaticObjectType type)
@@ -206,16 +206,16 @@ public class StaticSceneGenerator : MonoBehaviour {
 		switch(type)
 		{
 			case SceneStaticObjectType.Crosswalk:
-				return Constants.CrosswalkSizeZ;
+				return Constants.Dimension.CrosswalkSizeZ;
 				
 			case SceneStaticObjectType.Road:
-				return Constants.RoadSizeZ;
+				return Constants.Dimension.RoadSizeZ;
 				
 			case SceneStaticObjectType.Sidewalk:
-				return Constants.PathSizeZ;
+				return Constants.Dimension.PathSizeZ;
 				
 			case SceneStaticObjectType.Grass:
-				return Constants.PathSizeZ;
+				return Constants.Dimension.PathSizeZ;
 			default:
 				return 0;
 		}
@@ -226,16 +226,16 @@ public class StaticSceneGenerator : MonoBehaviour {
 		switch(type)
 		{
 			case SceneStaticObjectType.Crosswalk:
-				return Constants.CrosswalkSizeX;
+				return Constants.Dimension.CrosswalkSizeX;
 				
 			case SceneStaticObjectType.Road:
-				return Constants.RoadSizeX;
+				return Constants.Dimension.RoadSizeX;
 				
 			case SceneStaticObjectType.Sidewalk:
-				return Constants.PathSizeX;
+				return Constants.Dimension.PathSizeX;
 				
 			case SceneStaticObjectType.Grass:
-				return Constants.PathSizeX;
+				return Constants.Dimension.PathSizeX;
 			default:
 				return 0;
 		}

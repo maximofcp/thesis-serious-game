@@ -9,11 +9,11 @@ public class EnemyBuilder : MonoBehaviour {
 	public GameObject pfAmbulance;
 
 
-	private GameManager settings;
+	private ArcadeGameManager settings;
 	private List<float> roads;
 	
 	void Start () {
-		settings = GameManager.instance;
+		settings = ArcadeGameManager.instance;
 		roads = new List<float>();
 		InvokeRepeating("Process", 0, 5);
 	}
@@ -58,23 +58,23 @@ public class EnemyBuilder : MonoBehaviour {
 		}
 
 		// defines a direction (left or right) and sets the lane position	
-		VehicleDirection direction = (VehicleDirection)Random.Range(0,2);
+		Utils.VehicleDirection direction = (Utils.VehicleDirection)Random.Range(0,2);
 		switch(direction)
 		{
-			case VehicleDirection.Left:
+			case Utils.VehicleDirection.Left:
 				enemyX = settings.GameRightBoundary;
-				enemyZ = roadZ + (2*Constants.PathSizeZ + 1) + Constants.PathSizeZ/2;
+				enemyZ = roadZ + (2*Constants.Dimension.PathSizeZ + 1) + Constants.Dimension.PathSizeZ/2;
 				break;
-			case VehicleDirection.Right:
+			case Utils.VehicleDirection.Right:
 				enemyX = settings.GameLeftBoundary;
-				enemyZ = roadZ + Constants.PathSizeZ + Constants.PathSizeZ/2;
+				enemyZ = roadZ + Constants.Dimension.PathSizeZ + Constants.Dimension.PathSizeZ/2;
 				break;
 		}
 		Vector3 enemyPosition = new Vector3(enemyX, 2, enemyZ);
 
 		// instantiates enemy at position
 		GameObject enemy = InstantiateSceneObject(vehicle, enemyPosition);
-		VehicleAI model = enemy.GetComponent<VehicleAI>();
+		VehicleController model = enemy.GetComponent<VehicleController>();
 		model.SetDirection(direction);
 		model.Go();
 	}
@@ -96,7 +96,7 @@ public class EnemyBuilder : MonoBehaviour {
 		GameObject dummy = Instantiate (prefab) as GameObject;
 		dummy.name = prefab.name;
 		dummy.transform.position = position;
-		dummy.transform.parent = GameObject.Find (settings.sceneObjectsNodeName).transform;		// Change new object parent
+		dummy.transform.parent = GameObject.Find (settings.sceneSettings.sceneObjectsNodeName).transform;		// Change new object parent
 		return dummy;
 	}
 

@@ -5,7 +5,7 @@ public class MovementController : MonoBehaviour
 {
 	private Animator anim;
 	private Vector3 target;
-	private GameManager settings;
+	private ArcadeGameManager settings;
 	private float previousZ;
 	public GameObject cursor;
 
@@ -13,7 +13,7 @@ public class MovementController : MonoBehaviour
 	{
 		target = transform.position;
 		previousZ = transform.position.z;
-		settings = GameManager.instance;
+		settings = ArcadeGameManager.instance;
 		anim = GetComponent<Animator>();
 		anim.speed = 0.5f;
 	}
@@ -24,8 +24,8 @@ public class MovementController : MonoBehaviour
 		if(transform.position.z > previousZ)
 		{
 			previousZ = transform.position.z;
-			if(transform.position.z - settings.playerWindowSizeZ > settings.playerStartPosition.z)
-				settings.playerBoundaryZ = transform.position.z - settings.playerWindowSizeZ;
+			if(transform.position.z - settings.sceneSettings.playerWindowSizeZ > settings.sceneSettings.playerStartPosition.z)
+				settings.sceneSettings.playerBoundaryZ = transform.position.z - settings.sceneSettings.playerWindowSizeZ;
 		}
 
 		// handle user inputs and movement
@@ -50,21 +50,21 @@ public class MovementController : MonoBehaviour
 			cursor.SetActive(false);
 
 		// point which player is trying to move
-		Vector3 moveTo = Vector3.MoveTowards (transform.position, target, Time.deltaTime * settings.playerSpeed);
+		Vector3 moveTo = Vector3.MoveTowards (transform.position, target, Time.deltaTime * settings.sceneSettings.playerSpeed);
 
 		// gets game bound box
-		float leftBound = settings.playerStartPosition.x - settings.playerWindowSizeX;
-		float rightBound = settings.playerStartPosition.x + settings.playerWindowSizeX;
+		float leftBound = settings.sceneSettings.playerStartPosition.x - settings.sceneSettings.playerWindowSizeX;
+		float rightBound = settings.sceneSettings.playerStartPosition.x + settings.sceneSettings.playerWindowSizeX;
 
 		// checks if player can move to point
-		if (moveTo.x < rightBound && moveTo.x > leftBound && moveTo.z > settings.playerBoundaryZ && cursor.activeInHierarchy)
+		if (moveTo.x < rightBound && moveTo.x > leftBound && moveTo.z > settings.sceneSettings.playerBoundaryZ && cursor.activeInHierarchy)
 		{
-			anim.Play(Constants.AnimPlayerWalking);
+			anim.Play(Constants.Animation.AnimPlayerWalking);
 			transform.position = moveTo;
 		}
 		else
 		{
-			anim.Play(Constants.AnimPlayerIdle);
+			anim.Play(Constants.Animation.AnimPlayerIdle);
 		}
 
 	}

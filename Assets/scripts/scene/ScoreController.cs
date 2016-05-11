@@ -17,25 +17,25 @@ public class ScoreController{
 
 	public void AddScoreVehicleHit()
 	{
-		currentScore += Constants.ScoreVehicleHit;
+		currentScore += Constants.Score.ScoreVehicleHit;
 		UpdateScore();
 	}
 
 	public void SubScoreVehicleHit()
 	{
-		currentScore -= Constants.ScoreVehicleHit;
+		currentScore -= Constants.Score.ScoreVehicleHit;
 		UpdateScore();
 	}
 
 	public void AddScoreCrosswalkCrossed()
 	{
-		currentScore += Constants.ScoreCrosswalkCrossed;
+		currentScore += Constants.Score.ScoreCrosswalkCrossed;
 		UpdateScore();
 	}
 
 	public void SubScoreCrosswalkCrossed()
 	{
-		currentScore -= Constants.ScoreCrosswalkCrossed;
+		currentScore -= Constants.Score.ScoreCrosswalkCrossed;
 		UpdateScore();
 	}
 

@@ -4,26 +4,26 @@ using System.Collections;
 public class CollisionController : MonoBehaviour
 {
 	public GameObject cursor;
-	private GameManager gameManager;
+	private ArcadeGameManager gameManager;
 
 	void Start()
 	{
-		gameManager = GameManager.instance;
+		gameManager = ArcadeGameManager.instance;
 	}
 
 	void OnTriggerEnter(Collider col)
 	{
 		switch (col.gameObject.tag) {
-			case Constants.TagIntentionToCrossA:
-			case Constants.TagIntentionToCrossB:
-				//Debug.Log("QUer atravessar");
+			case Constants.Tag.TagCrosswalk:
+			case Constants.Tag.TagIntentionToCrossA:
+			case Constants.Tag.TagIntentionToCrossB:
 				IntentionToCrossController intentionController = col.transform.GetComponentInParent<IntentionToCrossController>();
-				intentionController.intention = true;
+				intentionController.RequestIntention(col.gameObject.tag);
 				break;
-			case Constants.TagVehicle:
+			case Constants.Tag.TagVehicle:
 				gameManager.DisplayGameOver();
 				break;
-			case Constants.TagObstacle:
+			case Constants.Tag.TagObstacle:
 				break;
 		}
 	}
@@ -31,20 +31,21 @@ public class CollisionController : MonoBehaviour
 	void OnTriggerStay(Collider col)
 	{
 		switch (col.gameObject.tag) {
-			case Constants.TagBuilding:
-			cursor.SetActive(false);
-			break;
+			case Constants.Tag.TagBuilding:
+				cursor.SetActive(false);
+				break;
 		}
 	}
 
 	void OnTriggerExit(Collider col)
 	{
 		switch (col.gameObject.tag) {
-			case Constants.TagIntentionToCrossA:
-			case Constants.TagIntentionToCrossB:
+			case Constants.Tag.TagCrosswalk:
+			case Constants.Tag.TagIntentionToCrossA:
+			case Constants.Tag.TagIntentionToCrossB:
 				//Debug.Log("Bazou palhaço");
 				IntentionToCrossController intentionController = col.transform.GetComponentInParent<IntentionToCrossController>();
-				intentionController.intention = false;
+				intentionController.RemoveIntention(col.gameObject.tag);
 				break;
 		}
 	}

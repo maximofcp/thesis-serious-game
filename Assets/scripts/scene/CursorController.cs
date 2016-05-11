@@ -1,23 +1,23 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class CursorController : MonoBehaviour {
 
-	private GameManager gameManager;
+	private ArcadeGameManager gameManager;
 
 	void Start()
 	{
-		gameManager = GameManager.instance;
+		gameManager = ArcadeGameManager.instance;
 	}
 
 	void OnTriggerEnter (Collider col)
 	{
 		// simulates click on a car
-		if(col.gameObject.CompareTag(Constants.TagVehicle))
+		if(col.gameObject.CompareTag(Constants.Tag.TagVehicle))
 		{
 			gameObject.SetActive(false);
 
-			VehicleAI vehicle = col.gameObject.GetComponent<VehicleAI>();
+			VehicleController vehicle = col.gameObject.GetComponent<VehicleController>();
 
 			bool isVehicleOnCurrentRoad = gameManager.speedLimitController.IsVehicleOnCurrentRoad(col.gameObject.transform.position.z);
 			if(isVehicleOnCurrentRoad)

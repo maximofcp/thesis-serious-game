@@ -21,24 +21,24 @@ public class TrafficLightsController : MonoBehaviour {
 
 	public TrafficLightState trafficRight;
 	public TrafficLightState trafficLeft;
-	private GameManager settings;
-	
+	private ArcadeGameManager settings;
+
 	void Start () {
-		settings = GameManager.instance;
+		settings = ArcadeGameManager.instance;
 		ResetLights();
-		InvokeRepeating("ChangeTrafficRight", Random.Range(0, settings.trafficLightsWaitTime), settings.trafficLightsWaitTime / 2);
-		InvokeRepeating("ChangeTrafficLeft", Random.Range(0, settings.trafficLightsWaitTime), settings.trafficLightsWaitTime / 2);
+		InvokeRepeating("ChangeTrafficRight", Random.Range(0, settings.sceneSettings.trafficLightsWaitTime), settings.sceneSettings.trafficLightsWaitTime / 2);
+		InvokeRepeating("ChangeTrafficLeft", Random.Range(0, settings.sceneSettings.trafficLightsWaitTime), settings.sceneSettings.trafficLightsWaitTime / 2);
 	}
 
 	void ChangeTrafficRight()
 	{
-		if(trafficRight == TrafficLightState.Green && Random.value < Constants.ProbabilityMedium)
+		if(trafficRight == TrafficLightState.Green && Random.value < Constants.Probability.ProbabilityMedium)
 			DisableTrafficR();
 	}
 
 	void ChangeTrafficLeft()
 	{
-		if(trafficLeft == TrafficLightState.Green && Random.value < Constants.ProbabilityMedium)
+		if(trafficLeft == TrafficLightState.Green && Random.value < Constants.Probability.ProbabilityMedium)
 			DisableTrafficL();
 	}
 
@@ -49,8 +49,8 @@ public class TrafficLightsController : MonoBehaviour {
 	{
 		if(isActiveAndEnabled)
 		{
-			StartCoroutine(TogglePedestrianLightsR(TrafficLightState.Red, settings.trafficLightsInterval));
-			StartCoroutine(ToggleTrafficLightsR(TrafficLightState.Green, 2 * settings.trafficLightsInterval));
+			StartCoroutine(TogglePedestrianLightsR(TrafficLightState.Red, settings.sceneSettings.trafficLightsInterval));
+			StartCoroutine(ToggleTrafficLightsR(TrafficLightState.Green, 2 * settings.sceneSettings.trafficLightsInterval));
 		}
 	}
 
@@ -61,10 +61,10 @@ public class TrafficLightsController : MonoBehaviour {
 	{
 		if(isActiveAndEnabled)
 		{
-			StartCoroutine(ToggleTrafficLightsR(TrafficLightState.Yellow, settings.trafficLightsInterval));
-			StartCoroutine(ToggleTrafficLightsR(TrafficLightState.Red, 2 * settings.trafficLightsInterval));
-			StartCoroutine(TogglePedestrianLightsR(TrafficLightState.Green, 3 * settings.trafficLightsInterval));
-			Invoke("EnableTrafficR", 5 * settings.trafficLightsInterval + settings.trafficLightsWaitTime);
+			StartCoroutine(ToggleTrafficLightsR(TrafficLightState.Yellow, settings.sceneSettings.trafficLightsInterval));
+			StartCoroutine(ToggleTrafficLightsR(TrafficLightState.Red, 2 * settings.sceneSettings.trafficLightsInterval));
+			StartCoroutine(TogglePedestrianLightsR(TrafficLightState.Green, 3 * settings.sceneSettings.trafficLightsInterval));
+			Invoke("EnableTrafficR", 5 * settings.sceneSettings.trafficLightsInterval + settings.sceneSettings.trafficLightsWaitTime);
 		}
 	}
 
@@ -75,8 +75,8 @@ public class TrafficLightsController : MonoBehaviour {
 	{
 		if(isActiveAndEnabled)
 		{
-			StartCoroutine(TogglePedestrianLightsL(TrafficLightState.Red, settings.trafficLightsInterval));
-			StartCoroutine(ToggleTrafficLightsL(TrafficLightState.Green, 2 * settings.trafficLightsInterval));
+			StartCoroutine(TogglePedestrianLightsL(TrafficLightState.Red, settings.sceneSettings.trafficLightsInterval));
+			StartCoroutine(ToggleTrafficLightsL(TrafficLightState.Green, 2 * settings.sceneSettings.trafficLightsInterval));
 		}
 	}
 
@@ -87,10 +87,10 @@ public class TrafficLightsController : MonoBehaviour {
 	{
 		if(isActiveAndEnabled)
 		{
-			StartCoroutine(ToggleTrafficLightsL(TrafficLightState.Yellow, settings.trafficLightsInterval));
-			StartCoroutine(ToggleTrafficLightsL(TrafficLightState.Red, 2 * settings.trafficLightsInterval));
-			StartCoroutine(TogglePedestrianLightsL(TrafficLightState.Green, 3 * settings.trafficLightsInterval));
-			Invoke("EnableTrafficL", 5 * settings.trafficLightsInterval + settings.trafficLightsWaitTime);
+			StartCoroutine(ToggleTrafficLightsL(TrafficLightState.Yellow, settings.sceneSettings.trafficLightsInterval));
+			StartCoroutine(ToggleTrafficLightsL(TrafficLightState.Red, 2 * settings.sceneSettings.trafficLightsInterval));
+			StartCoroutine(TogglePedestrianLightsL(TrafficLightState.Green, 3 * settings.sceneSettings.trafficLightsInterval));
+			Invoke("EnableTrafficL", 5 * settings.sceneSettings.trafficLightsInterval + settings.sceneSettings.trafficLightsWaitTime);
 		}
 	}
 

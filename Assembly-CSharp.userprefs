@@ -1,0 +1,13 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\enemy\TrainSignalController.cs">
+    <Files>
+      <File FileName="Assets\scripts\enemy\TrainSignalController.cs" Line="102" Column="14" />
+      <File FileName="Assets\scripts\scene\GameBuilder.cs" Line="279" Column="23" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

@@ -3,27 +3,26 @@ using System.Collections;
 
 public class TrainSignalController : MonoBehaviour {
 
-	private bool canCross;
 	public GameObject redLight;
 	public GameObject greenLight;
 	public GameObject pfTrain;
 
 	private GameObject train;
 	private Vector3 trainDestiny;
-	private GameManager settings;
-
+	private ArcadeGameManager settings;
+	private bool canCross;
 	private int blinkCounter;
 
 	void Start()
 	{
 		blinkCounter = 0;
-		settings = GameManager.instance;
+		settings = ArcadeGameManager.instance;
 		train = (GameObject)Instantiate(pfTrain);
 		train.SetActive(false);
 		redLight.SetActive(false);
 		greenLight.SetActive(true);
 
-		InvokeRepeating("SpawnTrain", 0, settings.trainSpawnTime);
+		InvokeRepeating("SpawnTrain", 0, settings.vehicleSettings.trainSpawnTime);
 	}
 
 	void Update()
@@ -37,7 +36,7 @@ public class TrainSignalController : MonoBehaviour {
 		else
 		{
 			// make the train move
-			train.transform.position = Vector3.MoveTowards (train.transform.position, trainDestiny, Time.deltaTime * settings.trainDefaultSpeed);
+			train.transform.position = Vector3.MoveTowards (train.transform.position, trainDestiny, Time.deltaTime * settings.vehicleSettings.trainDefaultSpeed);
 		}
 	}
 
@@ -56,8 +55,8 @@ public class TrainSignalController : MonoBehaviour {
 	void ResetTrain()
 	{
 		train.SetActive(true);
-		float startX = settings.playerStartPosition.x + settings.playerWindowSizeX + settings.generationOffsetX + 20;
-		float endX = settings.playerStartPosition.x - settings.playerWindowSizeX - settings.generationOffsetX - 20;
+		float startX = settings.sceneSettings.playerStartPosition.x + settings.sceneSettings.playerWindowSizeX + settings.sceneSettings.generationOffsetX + 20;
+		float endX = settings.sceneSettings.playerStartPosition.x - settings.sceneSettings.playerWindowSizeX - settings.sceneSettings.generationOffsetX - 20;
 		train.transform.position = new Vector3(startX, transform.position.y + 1, transform.position.z + 12);
 		trainDestiny = new Vector3(endX, transform.position.y + 1, transform.position.z + 12);
 	}
@@ -68,7 +67,7 @@ public class TrainSignalController : MonoBehaviour {
 	 */
 	void SpawnTrain()
 	{
-		if(!train.activeInHierarchy && Random.value < Constants.ProbabilityLow)
+		if(!train.activeInHierarchy && Random.value < Constants.Probability.ProbabilityLow)
 		{
 			ResetTrain();
 			SetCanCross(false);
